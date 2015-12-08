@@ -80,7 +80,7 @@ var check= function(cred,callback)
     });
 }
 
-var checkDuplicate= function(email,callback)
+var checkDuplicate= function(email, employeeid, callback)
 {
 
     var mongodb = require('mongodb');
@@ -99,12 +99,15 @@ var checkDuplicate= function(email,callback)
 
             var collection = db.collection('employees');
 
-            collection.findOne({ email: email}, function(err, doc){
+            collection.findOne({
+                $or: [
+                    {email: email}, {employeeid: employeeid}
+                    ]}, function(err, doc){
                 if(err)
                     throw err;
 
                 if(doc) {
-                    console.log(email + " already exists");
+                    console.log("Email: " + email +" and/or EmployeeId: "+ employeeid + " already exists");
                     callback(1);
 
                 } else {

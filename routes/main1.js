@@ -13,6 +13,9 @@ var connection = require("../connection");
 var cookieParser = require('cookie-parser');
 var session = require('express-session');
 
+//app.set('views', path.join(__dirname, 'views'));//danger
+app.set('view engine', 'ejs');
+
 app.use(cookieParser());
 app.use(session({secret: '1234567890QWERTY'}));
 
@@ -36,20 +39,15 @@ module.exports = function(app){
 
         console.log("Name: " + name + " Email: " + email + "Employee id: " +employeeid);
 
-        connection.checkDuplicate(email, function(val){
+        connection.checkDuplicate(email, employeeid, function(val){
 
             if(val==1){
 
-                //res.send(500,"show-alert");
-
-                res.render("register.html", {val:"true"});
-                //res.json({ name: "example" });
-                //res.send("value exists");
-
+               res.redirect('/registeropen?error');
             }
             else {
                 connection.add(name,email,employeeid,password,position,joining_date,active);
-                res.render("login.html");
+                res.redirect("/loginopen?success");
             }
 
         });
@@ -63,7 +61,6 @@ module.exports = function(app){
 
     app.get('/loginopen', function(req, res){
         res.render("login.html");
-
 
     });
 
@@ -88,7 +85,7 @@ module.exports = function(app){
 
     });
 
-    /*app.get('/checkuser', function(req, res){
+    /*app.get('/checkuser', function(req, res){    //just in case :P
 
         req.session.email=req.param('email');
 
@@ -143,7 +140,8 @@ module.exports = function(app){
                     else
                     {
                         req.session.email=null;
-                        res.end('<div><h1>Username and password is invalid!</h1></div></br><a href="/loginopen">Click here to login again</a>');
+                        //res.end('<div><h1>Username and password is invalid!</h1></div></br><a href="/loginopen">Click here to login again</a>');
+                        res.redirect("/loginopen?error");
                     }
 
                 }

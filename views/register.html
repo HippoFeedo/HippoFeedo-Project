@@ -16,13 +16,14 @@
     </script>
 
     <script type="text/javascript">
-
-        $.get( "/adduser", function( data ) {
-            name = data.val;
-            if(name == "true"){
-                alert(name)
-            }
-        });
+       function myFunction() {
+           var url = window.location.search;
+           if(url=="?error")
+           {
+               alert("The Email and/or EmployeeId already exists!!")
+           }
+        }
+        window.onload = myFunction;
 
     </script>
 
@@ -137,6 +138,7 @@
     <form class="form" name="registerForm" method="post" id="myForm" action="/adduser" novalidate>
 
         <h2>| Hippo Feedo |</h2>
+
         <hr>
         <p style="text-align:center" >Please enter all the fields</p>
         <br>

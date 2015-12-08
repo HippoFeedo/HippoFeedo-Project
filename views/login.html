@@ -13,6 +13,23 @@
         loginApp.controller('loginController', function($scope){
         });
     </script>
+
+    <script type="text/javascript">
+        function myFunction() {
+            var url = window.location.search;
+            if(url=="?success")
+            {
+                alert("You have been successfully registered!! Kindly login")
+            }
+
+            if(url=="?error")
+            {
+                alert("Invalid Credentials!! Please try again...")
+            }
+        }
+        window.onload = myFunction;
+
+    </script>
     <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/github-fork-ribbon-css/0.1.1/gh-fork-ribbon.min.css"/>
     <style>
         h2{
