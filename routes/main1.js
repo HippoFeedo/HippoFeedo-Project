@@ -24,19 +24,37 @@ module.exports = function(app){
         res.render("login.html");
     });
 
-    app.get('/adduser', function(req, res){
-        res.render("login.html");
-        var name = req.param('name');
-        var email = req.param('email');
-        var employeeid = req.param('employeeid');
-        var password = req.param('password');
+    app.post('/adduser', function(req, res){
+
+        var name = req.body.name;
+        var email = req.body.email;
+        var employeeid = req.body.employeeid;
+        var password = req.body.password;
         var position='';
         var joining_date= '';
         var active= 'Y';
 
         console.log("Name: " + name + " Email: " + email + "Employee id: " +employeeid);
 
-        connection.add(name,email,employeeid,password,position,joining_date,active);
+        connection.checkDuplicate(email, function(val){
+
+            if(val==1){
+
+                //res.send(500,"show-alert");
+                res.render("register.html", {value:1});
+                //res.send("value exists");
+
+            }
+            else {
+                connection.add(name,email,employeeid,password,position,joining_date,active);
+                res.render("login.html");
+            }
+
+        });
+
+
+
+
 
 
     });
@@ -47,13 +65,13 @@ module.exports = function(app){
 
     });
 
-    app.get('/registeropen', function(req, res){
+    app.post('/registeropen', function(req, res){
         res.render("register.html");
 
 
     });
 
-    app.get('/index.html', function(req, res){
+    app.post('/index.html', function(req, res){
 
             if (req.session.email!=null) {
 
@@ -68,7 +86,7 @@ module.exports = function(app){
 
     });
 
-    app.get('/checkuser', function(req, res){
+    /*app.get('/checkuser', function(req, res){
 
         req.session.email=req.param('email');
 
@@ -96,10 +114,45 @@ module.exports = function(app){
 
            }
        );
+    });*/
+
+    app.post('/checkuser', function(req, res) {
+
+            req.session.email = req.body.email;
+
+            var email = req.body.email;
+            var password = req.body.password;
+
+
+            console.log(" Email: " + email + " Pass: " + password);
+
+            //console.log(" Email: " + email);
+            var cred = {
+                email : email,
+                password : password
+            }
+            connection.check(cred,function(o)
+                {
+                    if (req.session.email || o==1) {
+
+                        res.render("index.html");
+                    }
+
+                    else
+                    {
+                        req.session.email=null;
+                        res.end('<div><h1>Username and password is invalid!</h1></div></br><a href="/loginopen">Click here to login again</a>');
+                    }
+
+                }
+            );
+
+
+
     });
 
     app.get('/logout', function(req, res){
-        console.log("Logged out from"+req.session.email);
+        console.log("Logged out from "+req.session.email);
         req.session.email=null;
         res.redirect("/");
 

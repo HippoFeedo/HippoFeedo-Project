@@ -3,7 +3,16 @@
 <head>
     <title>HippoFeedo Login Page</title>
     <link rel="stylesheet" href="../css/style.css"/>
-    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+    <script src="lib/angular.min.js"></script>
+    <script src="lib/angular-messages.js"></script>
+    <script src="lib/angular-resource.min.js"></script>
+
+    <script>
+        var loginApp = angular.module('loginApp', []);
+
+        loginApp.controller('loginController', function($scope){
+        });
+    </script>
     <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/github-fork-ribbon-css/0.1.1/gh-fork-ribbon.min.css"/>
     <style>
         h2{
@@ -11,7 +20,8 @@
             font-size: 24px;
         }
         hr{
-            margin-bottom: 30px;
+            margin-bottom: 10px;
+            margin-top: 20px;
         }
         div.container{
             width: 600px;
@@ -31,7 +41,7 @@
             border-radius: 2px;
             font-size: 13px;
         }
-        input[type=text],[type=password] {
+        input[type=text],[type=password],[type=email], [type=number] {
             width: 97.7%;
             height: 34px;
             padding-left: 5px;
@@ -42,12 +52,20 @@
             color: #4f4f4f;
             font-size: 16px;
         }
-        label{
+        label {
             color: #464646;
             text-shadow: 0 1px 0 #fff;
             font-size: 14px;
             font-weight: bold;
         }
+
+        p {
+            color: firebrick;
+            text-shadow: 0 1px 0 #fff;
+            font-size: 14px;
+            font-weight: bold;
+        }
+
         input[type=submit] {
             width: 100%;
             background: linear-gradient(#22abe9 5%, #36caf0 100%);
@@ -61,6 +79,25 @@
             text-shadow: 0px 1px 0px #13506D;
         }
 
+
+        input[type=submit]:disabled, input[type=submit] [disabled] :hover {
+
+            cursor: not-allowed;
+            color: lightgrey;
+            text-shadow: 0px 1px 0px #13506D;
+
+
+        }
+
+        .error {
+
+            color: red;
+            font-size: 14px;
+        }
+
+        .formElement {
+            margin-top: 10px;
+        }
 
     </style>
 </head>
@@ -76,22 +113,41 @@
         </div>
     </div>
     <div class="main">
-        <div id="box">
-            <form class="form" method="get" action="/checkuser">
+        <div id="box" ng-app="loginApp" ng-controller="loginController">
+            <form class="form" name="loginForm" novalidate method="post" action="/checkuser">
 
                 <h2>| HippoFeedo |</h2>
                 <hr>
-                <p style="text-align:center">Please enter your login credentials below to access the HippoFeedo</p>
+                <p style="text-align:center">Please enter your login credentials to access HippoFeedo</p>
+                <br>
+                <div class="formElement">
                 <label>Email :</label>
-                <input type="text" name="email" id="email">
+                <input type="email" name="email" id="email" ng-model="email" required placeholder="john.doe@hippo.com">
+                <div class="error" style="color: red" ng-if="loginForm.email.$touched" ng-messages="loginForm.email.$error">
+                    <span ng-show = "loginForm.email.$error.required">Email is required.</span>
+                    <span ng-show = "loginForm.email.$error.email">Email is invalid</span>
+                </div>
+                </div>
+
+                <div class="formElement">
                 <label>Password :</label>
-                <input type="password" name="password" id="password">
-                <input type="submit" name="login" id="login" value="Login">
+                <input type="password" name="password" id="password" ng-model="password" required placeholder="password">
+                <div class="error" style = "color:red" ng-if="loginForm.password.$touched" ng-show = "loginForm.password.$error">
+                    <span ng-show = "loginForm.password.$error.required">Password is required</span>
+                </div>
+                </div>
+
+                <div class="formElement">
+                <!--<input type="submit" name="login" id="login" value="Login">-->
+                <input type="submit" id="login" name="login" ng-model="login" value="Login" ng-disabled="loginForm.email.$error.email || loginForm.email.$error.required
+                                                                                    || loginForm.password.$error.required || loginForm.password.$error.minlength">
+                </div>
+
                 <hr>
 
             </form>
 
-            <form action="/registeropen" method="get">
+            <form action="/registeropen" method="post">
                 <input type="submit" value="Click Here To Register" />
             </form>
 
