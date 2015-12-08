@@ -41,7 +41,9 @@ module.exports = function(app){
             if(val==1){
 
                 //res.send(500,"show-alert");
-                res.render("register.html", {value:1});
+
+                res.render("register.html", {val:"true"});
+                //res.json({ name: "example" });
                 //res.send("value exists");
 
             }
@@ -65,13 +67,13 @@ module.exports = function(app){
 
     });
 
-    app.post('/registeropen', function(req, res){
+    app.get('/registeropen', function(req, res){
         res.render("register.html");
 
 
     });
 
-    app.post('/index.html', function(req, res){
+    app.get('/index.html', function(req, res){
 
             if (req.session.email!=null) {
 
@@ -133,7 +135,7 @@ module.exports = function(app){
             }
             connection.check(cred,function(o)
                 {
-                    if (req.session.email || o==1) {
+                    if (req.session.email && o==1) {
 
                         res.render("index.html");
                     }

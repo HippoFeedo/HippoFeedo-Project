@@ -16,11 +16,13 @@
     </script>
 
     <script type="text/javascript">
-        var v = value;
-        if(v == 1){
-            alert("Done!")
-        }
 
+        $.get( "/adduser", function( data ) {
+            name = data.val;
+            if(name == "true"){
+                alert(name)
+            }
+        });
 
     </script>
 
@@ -200,7 +202,7 @@
 
     </form>
       <hr>
-        <form action="/loginopen" method="post">
+        <form action="/loginopen" method="get">
             <input type="submit" value="Already Registered? Click here!" />
         </form>
 
