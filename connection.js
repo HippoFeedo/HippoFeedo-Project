@@ -103,6 +103,7 @@ var checkDuplicate= function(email, employeeid, callback)
                 $or: [
                     {email: email}, {employeeid: employeeid}
                     ]}, function(err, doc){
+
                 if(err)
                     throw err;
 

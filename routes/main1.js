@@ -13,7 +13,6 @@ var connection = require("../connection");
 var cookieParser = require('cookie-parser');
 var session = require('express-session');
 
-//app.set('views', path.join(__dirname, 'views'));//danger
 app.set('view engine', 'ejs');
 
 app.use(cookieParser());
@@ -51,12 +50,6 @@ module.exports = function(app){
             }
 
         });
-
-
-
-
-
-
     });
 
     app.get('/loginopen', function(req, res){
@@ -157,7 +150,4 @@ module.exports = function(app){
         res.redirect("/?loggedout");
 
     });
-
-
-
 }
