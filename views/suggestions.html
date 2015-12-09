@@ -13,7 +13,9 @@
     <script src="js/script.js"></script>
     <script src="js/jquery.ui.totop.js"></script>
     <script src="js/superfish.js"></script>
-
+    <script src="lib/angular.min.js"></script>
+    <script src="lib/angular-messages.js"></script>
+    <script src="lib/angular-resource.min.js"></script>
     <script src="js/jquery.equalheights.js"></script>
     <script src="js/jquery.mobilemenu.js"></script>
     <script src="js/jquery.easing.1.3.js"></script>
@@ -22,8 +24,35 @@
             $().UItoTop({ easingType: 'easeOutQuart' });
         })
     </script>
+    <script>
+        var suggestApp = angular.module('suggestApp', []);
+
+        suggestApp.controller('suggestController', function($scope){
+        });
+    </script>
     <script src="js/html5shiv.js"></script>
     <link rel="stylesheet" media="screen" href="css/ie.css">
+    <style>
+        .error {
+
+            color: #E02A05;
+            font-size: 12px;
+            float: left;
+
+        }
+
+        .formElement {
+            margin-top: 10px;
+        }
+
+        input[type=submit]:disabled, input[type=submit] [disabled] :hover {
+
+            cursor: not-allowed;
+            color: palevioletred;
+
+        }
+    </style>
+
 </head>
 <body id="top">
 <!--==============================header=================================-->
@@ -61,7 +90,7 @@
     <div class="content">
         <div class="container_12">
             <div class="grid_12">
-                <div class="box">
+                <div class="box" ng-app="suggestApp" ng-controller="suggestController">
                     <div class="inner maxheight">
                         <h3>Suggestions Submission Zone</h3>
                         <div class="map">
@@ -69,30 +98,42 @@
                             <div class="fleft">
                                 <h4>Please fill all the fields to submit the suggestion</h4>
                                 <hr>
-                                <form method="get" id="form" action="/addsuggestion" novalidate>
+                                <form name="suggestForm" method="get" id="form" action="/addsuggestion" novalidate>
                                     <div class="success_wrapper">
                                         <div class="success-message">Suggestion form submitted</div>
                                     </div>
                                     <div><strong>Suggestion Title</strong></div>
+                                    <div class="formElement">
                                     <label class="name">
-                                        <input type="text" placeholder="Suggestion title..." data-constraints="@Required" id="title" name="title"/>
-                                        <span class="empty-message">*This field is required.</span>
+                                        <input type="text" ng-model="title" name="title" placeholder="Suggestion title..." required minlength="10" id="title" />
+                                        <span class="error" ng-if="suggestForm.title.$touched" ng-show="suggestForm.title.$error">
+                                                    <span ng-show = "suggestForm.title.$error.required">Title is required.</span>
+                                                    <span ng-show = "suggestForm.title.$error.minlength">Title is too short.</span>
+                                        </span>
                                     </label>
+                                    </div>
                                     </br>
                                     </br>
                                     </br>
                                     <div><strong>Suggestion Description</strong></div>
+                                    <div class="formElement">
                                     <label class="message">
-                                        <textarea placeholder="Explain the suggestion briefly..." data-constraints='@Required @Length(min=20,max=999999)' id="description" name="description"></textarea>
-                                        <span class="empty-message">*This field is required.</span>
-                                        <span class="error-message">*Suggestion Description is too short.</span>
+                                        <textarea placeholder="Explain the suggestion briefly..."  id="description" name="description" ng-model="description" required></textarea>
+                                        <span class="error" ng-if="suggestForm.description.$touched" ng-show="suggestForm.description.$error">
+                                                    <span ng-show = "suggestForm.description.$error.required">Description is required.</span>
+                                        </span>
                                     </label>
+                                    </div>
+                                    <br>
                                     <div>
                                         <div class="btns">
                                             <a href="#" data-type="reset" class="btn">Clear</a>
                                         </div>
                                     </div>
-                                    <input type="submit" id="cmplntsbmt" value="Submit Suggestion">
+                                    <br>
+                                    <input type="submit" id="cmplntsbmt" value="Submit Suggestion" name="suggest" ng-model="suggest" ng-disabled="suggestForm.title.$error.required
+                                                                                                                                        || suggestForm.title.$error.minlength
+                                                                                                                                        || suggestForm.description.$error.required ">
                                 </form>
                             </div>
                         </div>

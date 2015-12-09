@@ -44,6 +44,13 @@
             .formElement {
                 margin-top: 10px;
             }
+
+            input[type=submit]:disabled, input[type=submit] [disabled] :hover {
+
+                cursor: not-allowed;
+                color: palevioletred;
+
+            }
         </style>
 	</head>
 	<body id="top">
@@ -94,6 +101,7 @@
 											<div class="success_wrapper">
 												<div class="success-message"><p>Complaint form submitted</p></div>
 											</div>
+
                                             <div class="formElement">
                                             <div><strong>Complaint Title</strong></div>
                                             <label class="name">
@@ -105,10 +113,12 @@
                                             </label>
 
 											</div>
+
                                             <br>
                                             <br>
-                                            <br>
-                                            <div class="formElement">
+
+
+                                            <div class="formElement" style="margin-top: 10px">
                                             <div><strong>Complaint Description</strong></div>
 											<label class="message">
 												<textarea ng-model="description" placeholder="Explain the complaint briefly..." required id="description" name="description"></textarea>
@@ -119,7 +129,7 @@
                                             </div>
                                             <br>
                                             <br>
-                                            <br>
+
                                             <div class="formElement">
                                             <div><strong>Priority</strong></div>
                                             <label class="iii">
@@ -128,7 +138,7 @@
                                                     <option>Medium</option>
                                                     <option>High</option>
                                                 </select>
-                                                <span class="empty-message">*This field is required.</span>
+
                                             </label>
                                             </div>
 
@@ -140,7 +150,9 @@
                                                 <br>
 
 											</div>
-                                            <input type="submit" id="cmplntsbmt" value="Submit Complaint">
+                                            <input type="submit" id="cmplntsbmt" value="Submit Complaint" name="complain" ng-model="complain" ng-disabled="complaintsForm.title.$error.required
+                                                                                                                                        || complaintsForm.title.$error.minlength
+                                                                                                                                        || complaintsForm.description.$error.required ">
 										</form>
 									</div>
 								</div>

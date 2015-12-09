@@ -20,6 +20,27 @@
 			$().UItoTop({ easingType: 'easeOutQuart' });
 		})
 </script>
+        <script type="text/javascript">
+            function myFunction() {
+                var url = window.location.search;
+                if(url=="?complainSubmitted")
+                {
+                    alert("Your complaint has been successfully submitted !")
+                }
+
+                if(url=="?ideaSubmitted")
+                {
+                    alert("Your idea has been successfully submitted !")
+                }
+
+                if(url=="?suggestionSubmitted")
+                {
+                    alert("Your suggestion has been successfully submitted !")
+                }
+            }
+            window.onload = myFunction;
+
+        </script>
 <script src="js/html5shiv.js"></script>
 <link rel="stylesheet" media="screen" href="css/ie.css">
 </head>
@@ -65,7 +86,7 @@
 						</div>
 						<div class="p1_box left cl2">
                             <img src="images/page1_img_ideas.jpg" alt="">
-							<a href="#" class="bot">Product Ideas<span><br>Post Now!</span></a>
+							<a href="/productideas" class="bot">Product Ideas<span><br>Post Now!</span></a>
 						</div>
 						<div class="p1_box left cl1 pos1">
 							<img src="images/page1_img4.jpg" alt="">
@@ -75,7 +96,7 @@
 					<div class="grid_6">
 						<div class="p1_box right cl1">
 							<img src="images/page1_img2.jpg" alt="">
-							<a href="#" class="bot">Suggestions<span><br>Post Now!</span></a>
+							<a href="/suggestions" class="bot">Suggestions<span><br>Post Now!</span></a>
 						</div>
 						<div class="p1_box right cl3">
 							<img src="images/page1_img3.jpg" alt="">

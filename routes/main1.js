@@ -160,7 +160,7 @@ module.exports = function(app){
     });
 
     app.get('/addcomplaint', function(req, res){
-        res.redirect("index.html");
+        //res.redirect("index.html");
         var email = req.session.email;
         var title = req.param('title');
         var description = req.param('description');
@@ -171,6 +171,56 @@ module.exports = function(app){
         console.log("Title: " + title + "Description: " +description);
 
         connection.addcomplaint(email,title,description,priority,now);
+
+        res.redirect('/index.html?complainSubmitted')
     });
+
+    app.get('/suggestions', function(req, res){
+
+        if(req.session.email!=null)
+            res.render("suggestions.html");
+        else
+            res.end('<div><h1>You are not authorized to view this page!</h1></div></br><a href="/loginopen">Click here to login</a>');
+    });
+
+    app.get('/addsuggestion', function(req, res){
+        //res.redirect("index.html");
+        var email = req.session.email;
+        var title = req.param('title');
+        var description = req.param('description');
+        var d = new Date();
+        var now = d.toLocaleString();
+
+        console.log("Title: " + title + "Description: " +description);
+
+        connection.addsuggestion(email,title,description,now);
+        res.redirect('/index.html?suggestionSubmitted');
+    });
+
+
+    app.get('/productideas', function(req, res){
+
+        if(req.session.email!=null)
+            res.render("productideas.html");
+        else
+            res.end('<div><h1>You are not authorized to view this page!</h1></div></br><a href="/loginopen">Click here to login</a>');
+    });
+
+    app.get('/addidea', function(req, res){
+
+        var email = req.session.email;
+        var title = req.param('title');
+        var description = req.param('description');
+        var product = req.param('product');
+        var d = new Date();
+        var now = d.toLocaleString();
+
+        console.log("Title: " + title + "Description: " +description+ "Product: " +product);
+
+        connection.addidea(email,title,description,product,now);
+
+        res.redirect('/index.html?ideaSubmitted');
+    });
+
 
 }

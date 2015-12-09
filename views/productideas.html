@@ -13,7 +13,9 @@
     <script src="js/script.js"></script>
     <script src="js/jquery.ui.totop.js"></script>
     <script src="js/superfish.js"></script>
-
+    <script src="lib/angular.min.js"></script>
+    <script src="lib/angular-messages.js"></script>
+    <script src="lib/angular-resource.min.js"></script>
     <script src="js/jquery.equalheights.js"></script>
     <script src="js/jquery.mobilemenu.js"></script>
     <script src="js/jquery.easing.1.3.js"></script>
@@ -22,8 +24,34 @@
             $().UItoTop({ easingType: 'easeOutQuart' });
         })
     </script>
+    <script>
+        var ideaApp = angular.module('ideaApp', []);
+
+        ideaApp.controller('ideaController', function($scope){
+        });
+    </script>
     <script src="js/html5shiv.js"></script>
     <link rel="stylesheet" media="screen" href="css/ie.css">
+    <style>
+        .error {
+
+            color: #E02A05;
+            font-size: 12px;
+            float: left;
+
+        }
+
+        .formElement {
+            margin-top: 10px;
+        }
+
+        input[type=submit]:disabled, input[type=submit] [disabled] :hover {
+
+            cursor: not-allowed;
+            color: palevioletred;
+
+        }
+    </style>
 </head>
 <body id="top">
 <!--==============================header=================================-->
@@ -61,7 +89,7 @@
     <div class="content">
         <div class="container_12">
             <div class="grid_12">
-                <div class="box">
+                <div class="box"  ng-app="ideaApp" ng-controller="ideaController">
                     <div class="inner maxheight">
                         <h3>Product-Ideas Submission Zone</h3>
                         <div class="map">
@@ -69,23 +97,28 @@
                             <div class="fleft">
                                 <h4>Please fill all the fields to submit your product idea</h4>
                                 <hr>
-                                <form method="get" id="form" action="/addidea" novalidate>
+                                <form name="ideaForm" ng-model="ideaForm" method="get" id="form" action="/addidea" novalidate>
                                     <div class="success_wrapper">
                                         <div class="success-message">Product Idea form submitted</div>
                                     </div>
                                     <div><strong>Idea Title</strong></div>
+                                    <div class="formElement">
                                     <label class="name">
-                                        <input type="text" placeholder="Idea title..." data-constraints="@Required" id="title" name="title"/>
-                                        <span class="empty-message">*This field is required.</span>
+                                        <input type="text" placeholder="Idea title..." required id="title" name="title" ng-model="title"/>
+                                        <span class="error" ng-if="ideaForm.title.$touched" ng-show="ideaForm.title.$error">
+                                                    <span ng-show = "ideaForm.title.$error.required">Title is required.</span>
+                                        </span>
                                     </label>
+                                    </div>
                                     </br>
                                     </br>
                                     </br>
                                     <div><strong>Idea Description</strong></div>
                                     <label class="message">
-                                        <textarea placeholder="Explain the idea briefly..." data-constraints='@Required @Length(min=20,max=999999)' id="description" name="description"></textarea>
-                                        <span class="empty-message">*This field is required.</span>
-                                        <span class="error-message">*Idea Description is too short.</span>
+                                        <textarea placeholder="Explain the idea briefly..." required id="description" name="description" ng-model="description"></textarea>
+                                        <span class="error" ng-if="ideaForm.description.$touched" ng-show="ideaForm.description.$error">
+                                                    <span ng-show = "ideaForm.description.$error.required">Title is required.</span>
+                                        </span>
                                     </label>
                                     </br></br>
                                     <div><strong>Select Product</strong></div>
@@ -105,7 +138,8 @@
                                         </div>
 
                                     </div>
-                                    <input type="submit" id="cmplntsbmt" value="Submit Idea">
+                                    <input type="submit" id="cmplntsbmt" value="Submit Idea" name="idea" ng-model="idea" ng-disabled="ideaForm.title.$error.required
+                                                                                                                                        || ideaForm.description.$error.required ">
                                 </form>
                             </div>
                         </div>
