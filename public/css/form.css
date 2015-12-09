@@ -144,14 +144,6 @@
 	
 }
 
-
-
-
-.message br {
-	height: 0;
-	line-height: 0;
-}
-
 #form .success-message {
 	position: absolute;
 	background: #f8f8f8;
