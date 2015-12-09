@@ -154,7 +154,7 @@ module.exports = function(app){
     app.get('/logout', function(req, res){
         console.log("Logged out from "+req.session.email);
         req.session.email=null;
-        res.redirect("/");
+        res.redirect("/?loggedout");
 
     });
 
